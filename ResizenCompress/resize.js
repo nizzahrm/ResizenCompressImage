@@ -40,7 +40,6 @@ const resizeAndDownload = () => {
     const canvas = document.createElement("canvas");
     const a = document.createElement("a");
     const ctx = canvas.getContext("2d");
-
     //if quality checkbox is checked, pass 0.7 to imgQuality else pass 1.0
     //1.0 is 100% quality where 0.7 is 70% of total. 
     const imgQuality = qualityInput.checked ? 0.7 : 1.0;
