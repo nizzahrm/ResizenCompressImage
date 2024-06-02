@@ -58,7 +58,7 @@ $conn->close();
                     </div>
                 <?php endforeach; ?>
             <?php else: ?>
-                <p>No images uploaded yet.</p>
+                <p>tidak ada gambar.</p>
             <?php endif; ?>
         </main>
     </div>
