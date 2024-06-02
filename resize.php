@@ -96,9 +96,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_FILES["photo"])) {
                 </div>
             </div>
             <button class="download-btn" onclick="downloadImage()">Download Image</button>
-            </form>
             <a href="logout.php">Logout</a>
         </div>
     </div>
+    </form>
 </body>
 </html>
