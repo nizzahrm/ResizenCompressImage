@@ -32,7 +32,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["photo-data"])) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PicPerfect</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="signIn.css">
+    <link rel="stylesheet" href="resize.css">
 </head>
 
 <body>
