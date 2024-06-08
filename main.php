@@ -25,7 +25,6 @@ include 'connect.php';
                 <li><a href="resize.php">Resize</a></li>
                 <li><a href="gambar.php">History</a></li>
                 <li><button onclick="window.location.href='profile.php'" class="profile-btn">
-                <i class="fas fa-user"></i>
                 <?php echo htmlspecialchars($_SESSION['email']); ?>
                 </button></li>
                 <li><button onclick="window.location.href='logout.php'">Logout</button></li>

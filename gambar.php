@@ -31,8 +31,7 @@ $conn->close();
     <link rel="stylesheet" href="gambar.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
-<body>
-    <div class="banner">
+<body class ="banner">
         <div class="navbar">
             <img src="ResizenCompress/remage.png" class="logo">
             <ul>
@@ -41,7 +40,6 @@ $conn->close();
                 <li><a href="gambar.php">History</a></li>
                 <li>
                     <button onclick="window.location.href='profile.php'" class="profile-btn">
-                        <i class="fas fa-user"></i>
                         <?php echo htmlspecialchars($_SESSION['email']); ?>
                     </button>
                 </li>
@@ -58,9 +56,7 @@ $conn->close();
                     </div>
                 <?php endforeach; ?>
             <?php else: ?>
-                <p>tidak ada gambar.</p>
             <?php endif; ?>
         </main>
-    </div>
 </body>
 </html>

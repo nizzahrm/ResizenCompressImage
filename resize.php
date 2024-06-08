@@ -6,19 +6,17 @@ if (!isset($_SESSION['user_id'])) {
 }
 
 include 'connect.php';
-if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_FILES["photo"])) {
+
+if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["photo-data"])) {
     $user_id = $_SESSION['user_id'];
-    $photo = file_get_contents($_FILES['photo']['tmp_name']);
-  
+    $photo_data = $_POST['photo-data'];
+    $photo = base64_decode(preg_replace('#^data:image/\w+;base64,#i', '', $photo_data));
 
     $sql = "INSERT INTO upload (user_id, photo) VALUES (?, ?)";
     $stmt = $conn->prepare($sql);
-    $stmt->bind_param("is",  $user_id, $photo,);
+    $stmt->bind_param("is", $user_id, $photo);
 
     if ($stmt->execute()) {
-        echo "image uploaded successfully!";
-    } else {
-        echo "Error: " . $stmt->error;
     }
 
     $stmt->close();
@@ -26,79 +24,42 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_FILES["photo"])) {
 }
 ?>
 
-
 <!DOCTYPE html>
-<html lang="en" dir="ltr">
+<html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Image Resizer Javascript</title>
-    <link rel="stylesheet" href="resize.css">
-    <script>
-    // Fungsi yang akan dipanggil saat tombol "Download Image" ditekan
-    function downloadImage() {
-        // Dapatkan data gambar dari elemen input
-        var fileInput = document.getElementById('file-input');
-        var file = fileInput.files[0];
-
-        // Buat objek FormData untuk mengirim data gambar
-        var formData = new FormData();
-        formData.append('photo', file);
-
-        // Kirim data gambar menggunakan AJAX
-        var xhr = new XMLHttpRequest();
-        xhr.open('POST', 'resize.php', true); // Ganti 'upload.php' dengan nama file skrip untuk menangani unggahan
-        xhr.onload = function () {
-            if (xhr.status === 200) {
-                console.log('Image uploaded successfully!');
-            } else {
-                console.error('Error uploading image:', xhr.responseText);
-            }
-        };
-        xhr.send(formData);
-    }
-    </script>
-
-
-    <script src="resize.js" defer></script>
+    <title>Webcam with Filter</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
 </head>
-<body>
-<form action="resize.php" method="post" enctype="multipart/form-data">
-    <div class="wrapper">
-        <div class="upload-box">
-            <input type="file" accept="image/*" id="file-input" hidden>
-            <img id="preview-img" style="display: none;">
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-upload" viewBox="0 0 16 16">
-                <path d="M.5 9.9a.5.5 0 0 1 .5.5v4.1a.5.5 0 0 0 .5.5h12a.5.5 0 0 0 .5-.5V10.4a.5.5 0 0 1 1 0v4.1a1.5 1.5 0 0 1-1.5 1.5h-12A1.5 1.5 0 0 1 0 14.5V10.4a.5.5 0 0 1 .5-.5zm7.646-5.854a.5.5 0 0 1 .708 0l3 3a.5.5 0 1 1-.708.708L8.5 5.207V14.5a.5.5 0 0 1-1 0V5.207L5.854 7.754a.5.5 0 0 1-.708-.708l3-3z"/>
-            </svg>
-            <input type="file" id="file-input" style="display: none;">
-            <p>Browse File to Upload</p>
+
+<body class="bg-gray-100">
+    <div class="container mx-auto py-10">
+        <h1 class="text-2xl font-bold mb-5">Webcam with Filter</h1>
+        <div id="webcam-container" class="relative">
+            <video id="video" class="w-full h-64" autoplay></video>
+            <button id="start-btn" class="absolute top-0 left-0 mt-4 ml-4 px-4 py-2 bg-blue-500 text-white rounded" onclick="startWebcam()">Start Webcam</button>
+            <button id="stop-btn" class="absolute top-0 left-0 mt-4 ml-4 px-4 py-2 bg-red-500 text-white rounded hidden" onclick="stopWebcam()">Stop Webcam</button>
+            <button id="capture-btn" class="absolute bottom-0 left-0 mb-4 ml-4 px-4 py-2 bg-green-500 text-white rounded hidden" onclick="captureImage()">Capture</button>
+            <select id="filter-select" class="absolute bottom-0 right-0 mb-4 mr-4 px-4 py-2 bg-white rounded hidden" onchange="applyFilter()">
+                <option value="">No Filter</option>
+                <option value="grayscale(100%)">Grayscale</option>
+                <option value="sepia(100%)">Sepia</option>
+                <option value="invert(100%)">Negate (Invert)</option>
+                <option value="blur(5px)">Blur</option>
+            </select>
         </div>
-        <div class="content">
-            <div class="row sizes">
-                <div class="column width">
-                    <label>Width</label>
-                    <input type="number">
-                </div>
-                <div class="column height">
-                    <label>Height</label>
-                    <input type="number">
-                </div>
-            </div>
-            <div class="row checkboxes">
-                <div class="column ratio">
-                    <input type="checkbox" id="ratio" checked>
-                    <label for="ratio">Lock aspect ratio</label>
-                </div>
-                <div class="column quality">
-                    <input type="checkbox" id="quality">
-                    <label for="quality">Reduce quality</label>
-                </div>
-            </div>
-            <button class="download-btn" onclick="downloadImage()">Download Image</button>
-            <a href="logout.php">Logout</a>
-        </div>
+        <canvas id="canvas" class="hidden"></canvas>
+        <form id="upload-form" method="post" action="resize.php" class="mt-5 hidden">
+            <input type="hidden" id="photo-data" name="photo-data">
+            <button type="submit" id="upload-btn" class="mt-3 bg-blue-500 text-white px-4 py-2 rounded hidden">Upload</button>
+        </form>
+        <a id="download-link" class="mt-3 bg-green-500 text-white px-4 py-2 rounded hidden" download="webcam_photo.png">Download</a>
     </div>
-    </form>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="resize.js"></script>
 </body>
+
 </html>
