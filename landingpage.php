@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My First Website</title>
+    <title>PicPerfect</title>
     <link rel="stylesheet" href="landingpage.css">
 </head>
 <body>
@@ -18,8 +18,8 @@
 
         </div>
         <div class="content">
-            <h1>Resize Your Image</h1>
-            <p>Ubah gambar-gambar rendah menjadi visual resolusi tinggi dengan cepat</p>
+            <h1>Take Your Photo</h1>
+            <p>Use stunning filters to transform your photos into high-quality works of art in an instant</p>
             <div>
                 <button onclick="window.location.href='signUp.html'"><span></span>Register</button>
             </div>    

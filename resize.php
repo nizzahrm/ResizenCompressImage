@@ -30,13 +30,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["photo-data"])) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Webcam with Filter</title>
+    <title>PicPerfect</title>
+    <link rel="stylesheet" href="resize.css">
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    
 </head>
 
-<body class="bg-gray-100">
+<body>
+    <div class="wrapper">
     <div class="container mx-auto py-10">
-        <h1 class="text-2xl font-bold mb-5">Webcam with Filter</h1>
         <div id="webcam-container" class="relative">
             <video id="video" class="w-full h-64" autoplay></video>
             <button id="start-btn" class="absolute top-0 left-0 mt-4 ml-4 px-4 py-2 bg-blue-500 text-white rounded" onclick="startWebcam()">Start Webcam</button>
@@ -57,7 +59,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["photo-data"])) {
         </form>
         <a id="download-link" class="mt-3 bg-green-500 text-white px-4 py-2 rounded hidden" download="webcam_photo.png">Download</a>
     </div>
-
+    </div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="resize.js"></script>
 </body>
