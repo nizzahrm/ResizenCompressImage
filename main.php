@@ -33,7 +33,7 @@ include 'connect.php';
         </div>
         <div class="content">
             <h1>Take Your Photo</h1>
-            <p>Use stunning filters to transform your photos into high-quality works of art in an instant</p> 
+            <p>Use stunning filters to transform your photos into high-quality works of art in an instant.</p> 
         </div>
     </div>
 </body>
