@@ -31,14 +31,26 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["photo-data"])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PicPerfect</title>
-    <link rel="stylesheet" href="resize.css">
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-    
+    <link rel="stylesheet" href="resize.css">
 </head>
 
 <body>
     <div class="wrapper">
     <div class="container mx-auto py-10">
+    <div class="navbar">
+            <img src="ResizenCompress/remage.png" class="logo">
+            <ul>
+            <ul>
+                <li><a href="main.php">Home</a></li>
+                <li><a href="resize.php">Resize</a></li>
+                <li><a href="gambar.php">History</a></li>
+                <button onclick="window.location.href='profile.php'" class="profile-btn">
+                <?php echo htmlspecialchars($_SESSION['email']); ?>
+                </button>
+                <button onclick="window.location.href='logout.php'">Logout</button>
+            </ul>
+        </div>
         <div id="webcam-container" class="relative">
             <video id="video" class="w-full h-64" autoplay></video>
             <button id="start-btn" class="absolute top-0 left-0 mt-4 ml-4 px-4 py-2 bg-blue-500 text-white rounded" onclick="startWebcam()">Start Webcam</button>
