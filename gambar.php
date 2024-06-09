@@ -28,17 +28,18 @@ $conn->close();
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My First Website</title>
+    <title>PicPerfect</title>
+    <link rel="icon" href="ResizenCompress/Frame 106.png" type="image/png">
     <link rel="stylesheet" href="gambar.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
 
 <body class="banner">
     <div class="navbar">
-        <img src="ResizenCompress/remage.png" class="logo">
+        <img src="ResizenCompress/remage1.png" class="logo">
         <ul>
             <li><a href="main.php">Home</a></li>
-            <li><a href="resize.php">Resize</a></li>
+            <li><a href="resize.php">Photo</a></li>
             <li><a href="gambar.php">History</a></li>
 
             <button onclick="window.location.href='profile.php'" class="profile-btn">

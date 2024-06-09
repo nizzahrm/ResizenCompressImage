@@ -13,16 +13,17 @@ include 'connect.php';
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PicPerfect</title>
+    <link rel="icon" href="ResizenCompress/Frame 106.png" type="image/png">
     <link rel="stylesheet" href="landingpage.css">
 </head>
 <body>
     <div class="banner">
         <div class="navbar">
-            <img src="ResizenCompress/remage.png" class="logo">
+            <img src="ResizenCompress/remage1.png" class="logo">
             <ul>
             <ul>
                 <li><a href="main.php">Home</a></li>
-                <li><a href="resize.php">Resize</a></li>
+                <li><a href="resize.php">photo</a></li>
                 <li><a href="gambar.php">History</a></li>
                 <button onclick="window.location.href='profile.php'" class="profile-btn">
                 <?php echo htmlspecialchars($_SESSION['email']); ?>

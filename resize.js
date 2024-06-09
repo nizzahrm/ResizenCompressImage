@@ -1,69 +1,52 @@
-let videoStream;
+let video = document.getElementById('video');
+        let canvas = document.getElementById('canvas');
+        let startBtn = document.getElementById('start-btn');
+        let stopBtn = document.getElementById('stop-btn');
+        let captureBtn = document.getElementById('capture-btn');
+        let uploadBtn = document.getElementById('upload-btn');
+        let downloadLink = document.getElementById('download-link');
+        let photoDataInput = document.getElementById('photo-data');
+        let filterSelect = document.getElementById('filter-select');
+        let currentStream = null;
 
-function startWebcam() {
-    const video = document.getElementById('video');
-    navigator.mediaDevices.getUserMedia({ video: true })
-        .then(stream => {
-            videoStream = stream;
-            video.srcObject = stream;
-            document.getElementById('start-btn').classList.add('hidden');
-            document.getElementById('stop-btn').classList.remove('hidden');
-            document.getElementById('capture-btn').classList.remove('hidden');
-            document.getElementById('filter-select').classList.remove('hidden');
-        })
-        .catch(err => {
-            console.error("Error accessing the camera: ", err);
-        });
-}
+        function startWebcam() {
+            if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+                navigator.mediaDevices.getUserMedia({ video: true }).then(function(stream) {
+                    currentStream = stream;
+                    video.srcObject = stream;
+                    video.play();
+                    startBtn.style.display = 'none';
+                    stopBtn.style.display = 'inline-block';
+                    captureBtn.style.display = 'inline-block';
+                });
+            }
+        }
 
-function stopWebcam() {
-    videoStream.getTracks().forEach(track => track.stop());
-    document.getElementById('start-btn').classList.remove('hidden');
-    document.getElementById('stop-btn').classList.add('hidden');
-    document.getElementById('capture-btn').classList.add('hidden');
-    document.getElementById('filter-select').classList.add('hidden');
-}
+        function stopWebcam() {
+            if (currentStream) {
+                currentStream.getTracks().forEach(track => track.stop());
+                video.srcObject = null;
+                startBtn.style.display = 'inline-block';
+                stopBtn.style.display = 'none';
+                captureBtn.style.display = 'none';
+                uploadBtn.style.display = 'none';
+                downloadLink.style.display = 'none';
+            }
+        }
 
-function applyFilter() {
-    const video = document.getElementById('video');
-    const filter = document.getElementById('filter-select').value;
-    video.style.filter = filter;
-}
+        function captureImage() {
+            canvas.width = video.videoWidth;
+            canvas.height = video.videoHeight;
+            let context = canvas.getContext('2d');
+            context.filter = filterSelect.value;
+            context.drawImage(video, 0, 0, canvas.width, canvas.height);
+            let dataURL = canvas.toDataURL('image/png');
+            photoDataInput.value = dataURL;
+            downloadLink.href = dataURL;
+            uploadBtn.style.display = 'inline-block';
+            downloadLink.style.display = 'inline-block';
+        }
 
-function captureImage() {
-    const video = document.getElementById('video');
-    const canvas = document.getElementById('canvas');
-    const context = canvas.getContext('2d');
-    const width = video.videoWidth;
-    const height = video.videoHeight;
-
-    canvas.width = width;
-    canvas.height = height;
-    context.filter = video.style.filter;
-    context.drawImage(video, 0, 0, width, height);
-
-    // Menghentikan tampilan video
-    video.pause();
-    video.srcObject = null;
-
-    // Mengubah visibilitas video dan tombol
-    video.classList.add('hidden');
-    document.getElementById('start-btn').classList.add('hidden');
-    document.getElementById('stop-btn').classList.add('hidden');
-    document.getElementById('capture-btn').classList.add('hidden');
-    document.getElementById('filter-select').classList.add('hidden');
-
-    const dataUrl = canvas.toDataURL('image/png');
-    document.getElementById('photo-data').value = dataUrl;
-
-    // Menampilkan gambar yang diambil
-    const img = document.createElement('img');
-    img.src = dataUrl;
-    document.getElementById('webcam-container').appendChild(img);
-
-    // Menampilkan tombol untuk mengunggah foto dan tombol unduh
-    document.getElementById('upload-form').classList.remove('hidden');
-    document.getElementById('upload-btn').classList.remove('hidden');
-    document.getElementById('download-link').classList.remove('hidden');
-    document.getElementById('download-link').href = dataUrl;
-}
+        function applyFilter() {
+            video.style.filter = filterSelect.value;
+        }

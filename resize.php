@@ -17,6 +17,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["photo-data"])) {
     $stmt->bind_param("is", $user_id, $photo);
 
     if ($stmt->execute()) {
+        // Handle successful upload if needed
     }
 
     $stmt->close();
@@ -26,54 +27,53 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["photo-data"])) {
 
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PicPerfect</title>
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="resize.css">
+    <link rel="icon" href="ResizenCompress/Frame 106.png" type="image/png">
+    <link rel="stylesheet" href="filter.css">
 </head>
-
-<body>
-    <div class="wrapper">
-    <div class="container mx-auto py-10">
+<body class="banner">
     <div class="navbar">
-            <img src="ResizenCompress/remage.png" class="logo">
-            <ul>
-            <ul>
-                <li><a href="main.php">Home</a></li>
-                <li><a href="resize.php">Resize</a></li>
-                <li><a href="gambar.php">History</a></li>
-                <button onclick="window.location.href='profile.php'" class="profile-btn">
+        <img src="ResizenCompress/remage1.png" class="logo">
+        <ul>
+            <li><a href="main.php">Home</a></li>
+            <li><a href="resize.php">Photo</a></li>
+            <li><a href="gambar.php">History</a></li>
+            <button onclick="window.location.href='profile.php'" class="profile-btn">
                 <?php echo htmlspecialchars($_SESSION['email']); ?>
-                </button>
-                <button onclick="window.location.href='logout.php'">Logout</button>
-            </ul>
-        </div>
-        <div id="webcam-container" class="relative">
-            <video id="video" class="w-full h-64" autoplay></video>
-            <button id="start-btn" class="absolute top-0 left-0 mt-4 ml-4 px-4 py-2 bg-blue-500 text-white rounded" onclick="startWebcam()">Start Webcam</button>
-            <button id="stop-btn" class="absolute top-0 left-0 mt-4 ml-4 px-4 py-2 bg-red-500 text-white rounded hidden" onclick="stopWebcam()">Stop Webcam</button>
-            <button id="capture-btn" class="absolute bottom-0 left-0 mb-4 ml-4 px-4 py-2 bg-green-500 text-white rounded hidden" onclick="captureImage()">Capture</button>
-            <select id="filter-select" class="absolute bottom-0 right-0 mb-4 mr-4 px-4 py-2 bg-white rounded hidden" onchange="applyFilter()">
+            </button>
+            <button onclick="window.location.href='logout.php'">Logout</button>
+        </ul>
+    </div>
+    <div class="webcam-container">
+        <video id="video" autoplay></video>
+        <canvas id="canvas"></canvas>
+    <main>
+        <div class="controls">
+            <button id="start-btn" onclick="startWebcam()">Start Webcam</button>
+            <button id="stop-btn" onclick="stopWebcam()">Stop Webcam</button>
+            <button id="capture-btn" onclick="captureImage()">Capture</button>
+            <select id="filter-select" onchange="applyFilter()">
                 <option value="">No Filter</option>
                 <option value="grayscale(100%)">Grayscale</option>
                 <option value="sepia(100%)">Sepia</option>
                 <option value="invert(100%)">Negate (Invert)</option>
                 <option value="blur(5px)">Blur</option>
             </select>
-        </div>
-        <canvas id="canvas" class="hidden"></canvas>
-        <form id="upload-form" method="post" action="resize.php" class="mt-5 hidden">
-            <input type="hidden" id="photo-data" name="photo-data">
-            <button type="submit" id="upload-btn" class="mt-3 bg-blue-500 text-white px-4 py-2 rounded hidden">Upload</button>
-        </form>
-        <a id="download-link" class="mt-3 bg-green-500 text-white px-4 py-2 rounded hidden" download="webcam_photo.png">Download</a>
+        
+    </div>
+    <div class="controls">
+    <form id="upload-form" method="post" action="resize.php">
+        <input type="hidden" id="photo-data" name="photo-data">
+        <button type="submit" id="upload-btn">Upload</button>
+    </form>
+    <a id="download-link" class="button" download="webcam_photo.png"><button>Download</button></a>
     </div>
     </div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="resize.js"></script>
+    </main> 
 </body>
-
 </html>
