@@ -8,7 +8,7 @@ if (!isset($_SESSION['user_id'])) {
 include 'connect.php';
 
 // Ambil data gambar dari database
-$sql = "SELECT photo FROM upload WHERE user_id = ?";
+$sql = "SELECT id, photo FROM upload WHERE user_id = ?";
 $stmt = $conn->prepare($sql);
 $stmt->bind_param("i", $_SESSION['user_id']);
 $stmt->execute();
@@ -16,7 +16,10 @@ $result = $stmt->get_result();
 
 $images = [];
 while ($row = $result->fetch_assoc()) {
-    $images[] = base64_encode($row['photo']);
+    $images[] = [
+        'id' => $row['id'],
+        'photo' => base64_encode($row['photo'])
+    ];
 }
 
 $stmt->close();
@@ -46,19 +49,22 @@ $conn->close();
                 <?php echo htmlspecialchars($_SESSION['email']); ?>
             </button>
 
-
             <button onclick="window.location.href='logout.php'">Logout</button>
-
         </ul>
     </div>
     <main>
         <?php if (count($images) > 0) : ?>
             <?php foreach ($images as $image) : ?>
                 <div class="image-container">
-                    <img src="data:image/jpeg;base64,<?= $image ?>" alt="Uploaded Image">
+                    <img src="data:image/jpeg;base64,<?= $image['photo'] ?>" alt="Uploaded Image">
+                    <div class="btn-group">
+                        <a href="download.php?id=<?= $image['id'] ?>" class="btn-download"><button>Download</button></a>
+                        <a href="delete.php?id=<?= $image['id'] ?>" class="btn-delete" onclick="return confirm('Are you sure you want to delete this image?');"><button>Delete</button></a>
+                    </div>
                 </div>
             <?php endforeach; ?>
         <?php else : ?>
+            <p>No images found.</p>
         <?php endif; ?>
     </main>
 </body>
