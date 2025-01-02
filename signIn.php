@@ -11,7 +11,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     if ($user) {
         session_start();
-        $_SESSION['user_id'] = $user['ID'];
+        $_SESSION['user_id'] = $user['id'];
         $_SESSION['email'] = $user['email'];
         header("Location: main.php");
         exit();

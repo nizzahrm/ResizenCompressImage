@@ -1,11 +1,10 @@
 <?php
+include 'connect.php';
 session_start();
 if (!isset($_SESSION['user_id'])) {
-    header("Location: signUp.html");
+    header("Location: signIn.html");
     exit;
 }
-
-include 'connect.php';
 ?>
 <!DOCTYPE html>
 <html lang="en">
